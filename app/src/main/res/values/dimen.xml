@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_login">32sp</dimen>
+    <dimen name="radius_corner">25dp</dimen>
+    <dimen name="margin_base">16dp</dimen>
+    <dimen name="margin_extra">32dp</dimen>
+    <dimen name="margin_drawable">4dp</dimen>
+    <dimen name="heigth_component_basic">50dp</dimen>
+</resources>
