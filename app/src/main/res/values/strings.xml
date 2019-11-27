@@ -15,4 +15,6 @@
 
     <string name="search">Search</string>
     <string name="logout">Log Out</string>
+
+    <string name="login_error_server">An error occurred with the server, try again later, please</string>
 </resources>
