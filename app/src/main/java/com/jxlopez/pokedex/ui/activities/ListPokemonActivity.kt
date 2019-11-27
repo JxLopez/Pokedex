@@ -11,32 +11,33 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jxlopez.pokedex.R
 import com.jxlopez.pokedex.common.Constant
+import com.jxlopez.pokedex.ui.adapter.PokemonAdapter
 import com.jxlopez.pokedex.viewmodel.PokemonViewModel
 import kotlinx.android.synthetic.main.activity_list_pokemon.*
 
 class ListPokemonActivity : BaseActivity() {
 
     private var pokemonViewModel: PokemonViewModel? = null
+    private var pokemonAdapter: PokemonAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_pokemon)
+
+        listPokemonsRecyclerView.setHasFixedSize(true)
+        listPokemonsRecyclerView.layoutManager = GridLayoutManager(this@ListPokemonActivity, Constant.COUNT_SPAN)
 
         pokemonViewModel = ViewModelProviders.of(this).get(PokemonViewModel::class.java)
 
         pokemonViewModel?.getPokemons(20,20)?.observe(this, Observer {
             when {
                 it.statusCode == 200 -> {
-                    it.objeto?.results?.forEach {
-                        Log.e("forEache","${it.name}")
-                    }
+                    pokemonAdapter = PokemonAdapter(this@ListPokemonActivity, it.objeto?.results)
+                    listPokemonsRecyclerView.adapter = pokemonAdapter
                 }
                 else -> Toast.makeText(this@ListPokemonActivity, getString(R.string.login_error_server), Toast.LENGTH_SHORT).show()
             }
         })
-
-        listPokemonsRecyclerView.setHasFixedSize(true)
-        listPokemonsRecyclerView.layoutManager = GridLayoutManager(this@ListPokemonActivity, Constant.COUNT_SPAN)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

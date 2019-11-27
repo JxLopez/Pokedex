@@ -2,16 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="wrap_content">
 
     <ImageView
+            android:id="@+id/itemPokemonImageView"
             android:layout_width="108dp"
             android:layout_height="108dp"
             android:layout_gravity="center_horizontal"/>
 
     <TextView
+            android:id="@+id/itemNombreTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
+            android:textSize="@dimen/size_base_text"
+            android:textColor="@android:color/white"
+            android:gravity="center_horizontal"/>
 
 </LinearLayout>

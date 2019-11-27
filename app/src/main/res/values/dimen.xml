@@ -6,4 +6,6 @@
     <dimen name="margin_extra">32dp</dimen>
     <dimen name="margin_drawable">4dp</dimen>
     <dimen name="heigth_component_basic">50dp</dimen>
+
+    <dimen name="size_base_text">16sp</dimen>
 </resources>
