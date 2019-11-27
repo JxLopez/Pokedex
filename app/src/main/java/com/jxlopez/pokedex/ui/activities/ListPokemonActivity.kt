@@ -4,13 +4,19 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.GridLayoutManager
 import com.jxlopez.pokedex.R
+import com.jxlopez.pokedex.common.Constant
+import kotlinx.android.synthetic.main.activity_list_pokemon.*
 
 class ListPokemonActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_pokemon)
+
+        listPokemonsRecyclerView.setHasFixedSize(true)
+        listPokemonsRecyclerView.layoutManager = GridLayoutManager(this@ListPokemonActivity, Constant.COUNT_SPAN)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
