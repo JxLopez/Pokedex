@@ -12,4 +12,7 @@
 
     <string name="ok">Ok</string>
     <string name="error">Error</string>
+
+    <string name="search">Search</string>
+    <string name="logout">Log Out</string>
 </resources>
