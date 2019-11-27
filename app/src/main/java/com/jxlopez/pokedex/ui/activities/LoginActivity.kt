@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.jxlopez.pokedex.R
+import com.jxlopez.pokedex.data.PreferencesHelper
 import com.jxlopez.pokedex.utils.Utils
 import com.jxlopez.pokedex.viewmodel.LoginViewModel
 import kotlinx.android.synthetic.main.activity_login.*
@@ -15,11 +16,23 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        validateLogin()
+    }
+
+    private fun validateLogin() {
+        if(PreferencesHelper.getLogged(this@LoginActivity))
+            loadNextActivity()
+        else
+            initComponents()
+    }
+
+    private fun initComponents() {
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         loginViewModel?.logged?.observe(this, Observer {
-            if(it)
+            if(it) {
+                PreferencesHelper.setLogged(this@LoginActivity, true)
                 loadNextActivity()
-            else
+            } else
                 Toast.makeText(this@LoginActivity, getString(R.string.error_autenticate), Toast.LENGTH_SHORT).show()
         })
 
