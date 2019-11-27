@@ -33,6 +33,7 @@
             app:layout_constraintTop_toTopOf="parent" >
 
         <EditText
+                android:id="@+id/loginEmailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/heigth_component_basic"
                 android:drawableStart="@drawable/ic_email"
@@ -44,6 +45,7 @@
                 android:background="@drawable/rounded_white_transparent"/>
 
         <EditText
+                android:id="@+id/loginPasswordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/heigth_component_basic"
                 android:layout_marginTop="@dimen/margin_base"
@@ -56,6 +58,7 @@
                 android:background="@drawable/rounded_white_transparent"/>
 
         <Button
+                android:id="@+id/loginAuthenticateButton"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/heigth_component_basic"
                 android:text="@string/authenticate"
