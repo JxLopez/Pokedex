@@ -2,6 +2,7 @@ package com.jxlopez.pokedex.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -57,6 +58,15 @@ class LoginActivity : BaseActivity() {
             hideSoftKeyboard(this@LoginActivity)
             false
         }
+
+        startAnimations()
+    }
+
+    private fun startAnimations() {
+        loginEmailEditText.animation = AnimationUtils.loadAnimation(this, R.anim.animation_fall_rigth)
+        loginPasswordEditText.animation = AnimationUtils.loadAnimation(this, R.anim.animation_fall_left)
+        loginAuthenticateButton.animation = AnimationUtils.loadAnimation(this, R.anim.animation_fall_rigth)
+        loginTitleTextView.animation = AnimationUtils.loadAnimation(this, R.anim.abc_slide_in_top)
     }
 
     private fun validateFields(): String {
