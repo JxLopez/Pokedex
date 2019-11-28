@@ -13,6 +13,9 @@ interface PokemonDao {
     @Query("SELECT * FROM ${Constant.Database.TablePokemon.NAME_TABLE} ORDER BY id ASC LIMIT :limit OFFSET :offset")
     suspend fun getPokemon(limit: Int, offset: Int): List<Pokemon>
 
+    @Query("SELECT * FROM ${Constant.Database.TablePokemon.NAME_TABLE} WHERE ${Constant.Database.TablePokemon.NAME} like :name ORDER BY id ASC")
+    suspend fun findPokemonByName(name: String): List<Pokemon>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(pokemon: Pokemon)
 

@@ -38,6 +38,16 @@ class PokemonAdapter (
         this.items?.addAll(items)
         notifyDataSetChanged()
     }
+
+    fun clearData() {
+        this.items?.clear()
+    }
+    fun setData(items: List<Pokemon>) {
+        clearData()
+        this.items?.addAll(items)
+        notifyDataSetChanged()
+    }
+
     class PokemonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView? = itemView.itemNombreTextView
         val ivImage: ImageView? = itemView.itemPokemonImageView

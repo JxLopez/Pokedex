@@ -3,7 +3,6 @@ package com.jxlopez.pokedex.ui.activities
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
@@ -40,16 +39,30 @@ class ListPokemonActivity : BaseActivity() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.e("onQueryTextSubmit",query)
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                Log.e("onQueryTextChange",newText)
+                doneLoad = false
+                pokemonViewModel?.findPokemonByName("%$newText%")
                 return false
             }
         })
 
+        searchItem.setOnActionExpandListener( object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
+                offset = 0
+                doneLoad = true
+                pokemonAdapter?.clearData()
+                loadData()
+                return true
+            }
+
+        })
         return true
     }
 
@@ -93,6 +106,11 @@ class ListPokemonActivity : BaseActivity() {
             }
             doneLoad = true
         })
+        pokemonViewModel?.dataFilter?.observe(this, Observer {
+            it?.let { data ->
+                pokemonAdapter?.setData(data)
+            }
+        })
     }
 
     private fun setRecyclerViewScrollListener(layoutManager: GridLayoutManager) {
@@ -116,7 +134,7 @@ class ListPokemonActivity : BaseActivity() {
     }
 
     private fun loadData() {
-        pokemonViewModel?.refreshData(20, offset)
+        pokemonViewModel?.getPokemons(20, offset)
     }
 
     private fun logOut() {
