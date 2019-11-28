@@ -17,4 +17,6 @@
     <string name="logout">Log Out</string>
 
     <string name="login_error_server">An error occurred with the server, try again later, please</string>
+
+    <string name="confirm_log_out">Do you want to log out?</string>
 </resources>

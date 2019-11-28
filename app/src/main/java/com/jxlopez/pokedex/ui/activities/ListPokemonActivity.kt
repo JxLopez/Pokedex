@@ -1,8 +1,11 @@
 package com.jxlopez.pokedex.ui.activities
 
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -10,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jxlopez.pokedex.R
 import com.jxlopez.pokedex.common.Constant
+import com.jxlopez.pokedex.data.PreferencesHelper
 import com.jxlopez.pokedex.data.database.entity.Pokemon
 import com.jxlopez.pokedex.ui.adapter.PokemonAdapter
 import com.jxlopez.pokedex.viewmodel.PokemonViewModel
@@ -47,6 +51,30 @@ class ListPokemonActivity : BaseActivity() {
         })
 
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.actionLogOut -> {
+                generateMessageDialog(
+                    getString(R.string.logout),
+                    getString(R.string.confirm_log_out),
+                    getString(android.R.string.yes),
+                    getString(android.R.string.cancel),
+                    false,
+                    DialogInterface.OnClickListener { dialogInterface, i ->
+                        logOut()
+                        dialogInterface.dismiss()
+                    }, DialogInterface.OnClickListener { dialogInterface, i ->
+                        dialogInterface.dismiss()
+                    }
+                )
+                true
+            } else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
+
     }
 
     private fun initComponents() {
@@ -89,6 +117,12 @@ class ListPokemonActivity : BaseActivity() {
 
     private fun loadData() {
         pokemonViewModel?.refreshData(20, offset)
+    }
+
+    private fun logOut() {
+        PreferencesHelper.setLogged(this@ListPokemonActivity, false)
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
 }
