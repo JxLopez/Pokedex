@@ -33,8 +33,8 @@ class PokemonRepository(application: Application) {
             apiService?.getPokemons(limit, offset)?.enqueue(object :
                 Callback<PokemonResponse> {
                 override fun onResponse(call: Call<PokemonResponse>, response: Response<PokemonResponse>) {
-                    val list : MutableList<Pokemon> = ArrayList()
-                    if(response.code() == 200) {
+                    val list: MutableList<Pokemon> = ArrayList()
+                    if (response.code() == 200) {
                         responseComplete.objeto = response.body()
                         responseComplete.objeto?.results?.forEach {
                             val pokemon = Pokemon(it.id, it.name, it.url)
@@ -60,5 +60,12 @@ class PokemonRepository(application: Application) {
                     continuation.resume(data)
                 }
             })
+        }
+
+    suspend fun findPokemonByName(name: String, data: MutableLiveData<List<Pokemon>>) =
+        suspendCoroutine<MutableLiveData<List<Pokemon>>> { continuation ->
+            GlobalScope.launch {
+                data.postValue(pokemonDao?.findPokemonByName(name))
+            }
         }
 }
