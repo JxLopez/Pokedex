@@ -2,16 +2,21 @@ package com.jxlopez.pokedex.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.jxlopez.pokedex.data.network.Response.PokemonResponseOnComplete
+import androidx.lifecycle.viewModelScope
+import com.jxlopez.pokedex.data.database.entity.Pokemon
 import com.jxlopez.pokedex.repository.PokemonRepository
+import kotlinx.coroutines.launch
 
-class PokemonViewModel : AndroidViewModel {
-    var pokemonRepository = PokemonRepository()
-    constructor(application: Application) : super(application)
+class PokemonViewModel(application: Application) : AndroidViewModel(application) {
+    var pokemonRepository = PokemonRepository(application)
+    val data = MutableLiveData<List<Pokemon>>()
 
-    fun getPokemons(limit: Int, offset: Int): LiveData<PokemonResponseOnComplete> {
-        return pokemonRepository.getPokemons(limit, offset)
+    fun refreshData(limit: Int, offset: Int) {
+        viewModelScope.launch {
+            pokemonRepository.getPokemons(limit, offset, data)
+        }
+
     }
+
 }

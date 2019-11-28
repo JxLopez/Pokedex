@@ -8,4 +8,10 @@ data class Results (
     var name: String,
     @SerializedName(Constant.EndPoints.Params.URL)
     var url: String
-)
+) {
+    val id: Int
+        get() {
+            val splitUrl = url.split("/")
+            return splitUrl[splitUrl.size - 2].toInt()
+        }
+}

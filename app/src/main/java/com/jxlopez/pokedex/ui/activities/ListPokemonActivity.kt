@@ -3,14 +3,14 @@ package com.jxlopez.pokedex.ui.activities
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.jxlopez.pokedex.R
 import com.jxlopez.pokedex.common.Constant
+import com.jxlopez.pokedex.data.database.entity.Pokemon
 import com.jxlopez.pokedex.ui.adapter.PokemonAdapter
 import com.jxlopez.pokedex.viewmodel.PokemonViewModel
 import kotlinx.android.synthetic.main.activity_list_pokemon.*
@@ -19,25 +19,14 @@ class ListPokemonActivity : BaseActivity() {
 
     private var pokemonViewModel: PokemonViewModel? = null
     private var pokemonAdapter: PokemonAdapter? = null
+    private var doneLoad = true
+    private var offset = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_pokemon)
-
-        listPokemonsRecyclerView.setHasFixedSize(true)
-        listPokemonsRecyclerView.layoutManager = GridLayoutManager(this@ListPokemonActivity, Constant.COUNT_SPAN)
-
-        pokemonViewModel = ViewModelProviders.of(this).get(PokemonViewModel::class.java)
-
-        pokemonViewModel?.getPokemons(20,20)?.observe(this, Observer {
-            when {
-                it.statusCode == 200 -> {
-                    pokemonAdapter = PokemonAdapter(this@ListPokemonActivity, it.objeto?.results)
-                    listPokemonsRecyclerView.adapter = pokemonAdapter
-                }
-                else -> Toast.makeText(this@ListPokemonActivity, getString(R.string.login_error_server), Toast.LENGTH_SHORT).show()
-            }
-        })
+        initComponents()
+        loadData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -59,4 +48,47 @@ class ListPokemonActivity : BaseActivity() {
 
         return true
     }
+
+    private fun initComponents() {
+        listPokemonsRecyclerView.setHasFixedSize(true)
+        val layoutManager = GridLayoutManager(this@ListPokemonActivity, Constant.COUNT_SPAN)
+        listPokemonsRecyclerView.layoutManager = layoutManager
+        setRecyclerViewScrollListener(layoutManager)
+        pokemonAdapter = PokemonAdapter(this@ListPokemonActivity, ArrayList<Pokemon>())
+        listPokemonsRecyclerView.adapter = pokemonAdapter
+
+        pokemonViewModel = ViewModelProviders.of(this).get(PokemonViewModel::class.java)
+
+        pokemonViewModel?.data?.observe(this, Observer {
+            it?.let { data ->
+                pokemonAdapter?.addData(data)
+            }
+            doneLoad = true
+        })
+    }
+
+    private fun setRecyclerViewScrollListener(layoutManager: GridLayoutManager) {
+        val scrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if(dy > 0) {
+                    val visibleItemCount = layoutManager.childCount
+                    val totalItemCount = layoutManager.itemCount
+                    val pastVisibleItemCount = layoutManager.findFirstVisibleItemPosition()
+
+                    if(doneLoad && ((visibleItemCount + pastVisibleItemCount) >= totalItemCount)) {
+                        doneLoad = false
+                        offset = offset.plus(20)
+                        loadData()
+                    }
+                }
+            }
+        }
+        listPokemonsRecyclerView.addOnScrollListener(scrollListener)
+    }
+
+    private fun loadData() {
+        pokemonViewModel?.refreshData(20, offset)
+    }
+
 }
