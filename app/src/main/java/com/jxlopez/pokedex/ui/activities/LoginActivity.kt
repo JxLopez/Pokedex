@@ -53,6 +53,10 @@ class LoginActivity : BaseActivity() {
                 loginViewModel?.loginUser(loginEmailEditText.text.toString(), loginPasswordEditText.text.toString())
             }
         }
+        loginBackground.setOnTouchListener { v, event ->
+            hideSoftKeyboard(this@LoginActivity)
+            false
+        }
     }
 
     private fun validateFields(): String {

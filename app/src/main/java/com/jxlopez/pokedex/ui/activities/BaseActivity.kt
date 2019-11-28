@@ -1,7 +1,9 @@
 package com.jxlopez.pokedex.ui.activities
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -38,5 +40,14 @@ abstract class BaseActivity : AppCompatActivity() {
         messageDialogBuilder.setNegativeButton(buttonTextNegative, onClickListenerNegative)
 
         messageDialogBuilder.create().show()
+    }
+
+    fun hideSoftKeyboard(activity: Activity) {
+        val inputMethodManager = activity.getSystemService(
+            Activity.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(
+            activity.currentFocus!!.windowToken, 0
+        )
     }
 }
