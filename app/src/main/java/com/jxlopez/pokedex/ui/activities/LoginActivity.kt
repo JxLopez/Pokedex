@@ -1,5 +1,6 @@
 package com.jxlopez.pokedex.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -12,10 +13,11 @@ import kotlinx.android.synthetic.main.activity_login.*
 import java.lang.StringBuilder
 
 class LoginActivity : BaseActivity() {
+
     private var loginViewModel: LoginViewModel? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
         validateLogin()
     }
 
@@ -27,6 +29,7 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun initComponents() {
+        setContentView(R.layout.activity_login)
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         loginViewModel?.logged?.observe(this, Observer {
             if(it) {
@@ -66,6 +69,8 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun loadNextActivity() {
-        //TODO open list pokemons
+        val intent = Intent(this@LoginActivity, ListPokemonActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
