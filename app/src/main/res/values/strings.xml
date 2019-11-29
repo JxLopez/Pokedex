@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Pokedex</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="authenticate">Authenticate</string>
+
+    <string name="error_autenticate">Email or password incorrect</string>
+    <string name="email_empty">Email cannot be empty</string>
+    <string name="email_invalid">Email is invalid</string>
+    <string name="password_empty">Password cannot be empty</string>
+
+    <string name="ok">Ok</string>
+    <string name="error">Error</string>
+
+    <string name="search">Search</string>
+    <string name="logout">Log Out</string>
+
+    <string name="login_error_server">An error occurred with the server, try again later, please</string>
+
+    <string name="confirm_log_out">Do you want to log out?</string>
 </resources>
